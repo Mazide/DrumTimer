@@ -37,6 +37,8 @@
     return self;
 }
 
+#pragma mark - setup
+
 - (void)setup{
     
     [self initNumbers];

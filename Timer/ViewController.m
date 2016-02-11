@@ -24,11 +24,11 @@
 
     [self.timerView setTimerInterval:3000];
 
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.f target:self selector:@selector(tic) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(tik) userInfo:nil repeats:YES];
     
 }
 
-- (void)tic{
+- (void)tik{
     [self.timerView tik];
 }
 
