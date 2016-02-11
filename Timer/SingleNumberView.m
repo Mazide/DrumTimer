@@ -14,8 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIView* mainView;
 @property (weak, nonatomic) IBOutlet UITableView* numberTableView;
 
-@property (strong, nonatomic) NSArray* numbers;
-@property (nonatomic) NSInteger previosValue;
+@property (strong, nonatomic) NSMutableArray* numbers;
 @property (nonatomic) BOOL needUpdate;
 
 @end
@@ -40,10 +39,9 @@
 
 - (void)setup{
     
-    self.numbers = @[@(9),@(8),@(7),@(6),@(5),@(4),@(3),@(2),@(1),@(0),@(9)];
-    self.previosValue = 0;
+    self.numbers = [NSMutableArray arrayWithArray:@[@(9),@(8),@(7),@(6),@(5),@(4),@(3),@(2),@(1),@(0)]];
     self.needUpdate = NO;
-
+    
     [self setupMainView];
     [self setupTableView];
 }
@@ -69,9 +67,11 @@
 
 - (void)setValue:(NSInteger)value animated:(BOOL)animated{
     NSInteger currentRow = [self.numbers indexOfObject:@(value)];
-
-    if (self.previosValue == 0 && value == 9) {
-        currentRow = 10;
+    NSInteger lastRow = [self.numbers indexOfObject:self.numbers.lastObject];
+    
+    if (currentRow == lastRow) {
+        [self.numbers insertObject:self.numbers.lastObject atIndex:0];
+        [self.numbers removeLastObject];
         self.needUpdate = YES;
     } else {
         self.needUpdate = NO;
@@ -80,8 +80,7 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentRow inSection:0];
     [self.numberTableView scrollToRowAtIndexPath:indexPath
                                 atScrollPosition:UITableViewScrollPositionTop
-                                        animated:animated];
-    self.previosValue = value;
+                                        animated:YES];
 }
 
 #pragma mark - UITableViewDataSource
@@ -92,12 +91,15 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NumberTableViewCell* numberCell = (NumberTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"NumberTableViewCell"];
-    numberCell.numberLabel.text = [NSString stringWithFormat:@"%ld", [self.numbers[indexPath.row] integerValue]];
+    NSInteger number = [self.numbers[self.needUpdate ? 0 : indexPath.row] integerValue];
+    numberCell.numberLabel.text = [NSString stringWithFormat:@"%ld", number];
     return numberCell;
 }
 
+
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
     if (self.needUpdate) {
+        [self.numberTableView reloadData];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.numberTableView scrollToRowAtIndexPath:indexPath
                                     atScrollPosition:UITableViewScrollPositionTop
