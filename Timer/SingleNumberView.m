@@ -9,7 +9,6 @@
 #import "SingleNumberView.h"
 #import "NumberTableViewCell.h"
 
-static const NSInteger period = 10;
 static const NSInteger maxValue = 9;
 
 @interface SingleNumberView() <UITableViewDelegate, UITableViewDataSource>
@@ -43,7 +42,7 @@ static const NSInteger maxValue = 9;
 - (void)setup{
 
     self.currentRow = 0;
-    self.countOfRows = period;
+    self.countOfRows = 11;
     
     [self setupMainView];
     [self setupTableView];
@@ -69,12 +68,7 @@ static const NSInteger maxValue = 9;
 
 - (void)setValue:(NSInteger)value{
 
-    self.currentRow = maxValue - value%period;
-    
-    if (self.currentRow >= self.countOfRows - 1) {
-        self.countOfRows += period;
-        [self.numberTableView reloadData];
-    }
+    self.currentRow = maxValue - value % self.countOfRows;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.currentRow inSection:0];
     [self.numberTableView scrollToRowAtIndexPath:indexPath
@@ -90,7 +84,7 @@ static const NSInteger maxValue = 9;
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NumberTableViewCell* numberCell = (NumberTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"NumberTableViewCell"];
-    numberCell.numberLabel.text = [NSString stringWithFormat:@"%ld", maxValue - indexPath.row%period];
+    numberCell.numberLabel.text = [NSString stringWithFormat:@"%ld", maxValue - indexPath.row % self.countOfRows];
     return numberCell;
 }
 

@@ -13,4 +13,5 @@
 - (void)setTimerInterval:(NSTimeInterval)timerInterval;
 - (void)tik;
 
+
 @end

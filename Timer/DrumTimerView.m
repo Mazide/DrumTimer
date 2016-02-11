@@ -59,10 +59,11 @@
     self.currentTimerInterval = (NSInteger)timerInterval;
     
     NSInteger secondsInMinuts = 60;
+    NSInteger minutsInHours = 60;
     NSInteger countInRunk = 10;
     
     NSInteger seconds = (NSInteger)timerInterval % secondsInMinuts;
-    NSInteger minuts = (NSInteger)timerInterval / secondsInMinuts;
+    NSInteger minuts = (NSInteger)timerInterval / secondsInMinuts % minutsInHours;
     
     NSInteger secondsFirstRunk = seconds % countInRunk;
     NSInteger secondsSecondRunk = seconds / countInRunk;
@@ -82,6 +83,12 @@
     if (self.currentTimerInterval <= 0) return;
     
     self.currentTimerInterval--;
+    [self setTimerInterval:self.currentTimerInterval];
+}
+
+-(void)tak{
+        
+    self.currentTimerInterval++;
     [self setTimerInterval:self.currentTimerInterval];
 }
 
