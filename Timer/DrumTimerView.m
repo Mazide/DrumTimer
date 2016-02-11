@@ -54,6 +54,10 @@
 
 - (void)setTimerInterval:(NSTimeInterval)timerInterval{
     
+    [self setTimerInterval:timerInterval animated:NO];
+}
+
+- (void)setTimerInterval:(NSTimeInterval)timerInterval animated:(BOOL)animated{
     if (timerInterval < 0) return;
     
     self.currentTimerInterval = (NSInteger)timerInterval;
@@ -71,11 +75,11 @@
     NSInteger minutsFirstRunk = minuts % countInRunk;
     NSInteger minutsSecondRunk = minuts / countInRunk;
     
-    [self.secondsFirstRunkView setValue:secondsFirstRunk];
-    [self.secondsSecondRunkView setValue:secondsSecondRunk];
+    [self.secondsFirstRunkView setValue:secondsFirstRunk animated:animated];
+    [self.secondsSecondRunkView setValue:secondsSecondRunk animated:animated];
     
-    [self.minutsFirstRunkView setValue:minutsFirstRunk];
-    [self.minutsSecondRunkView setValue:minutsSecondRunk];
+    [self.minutsFirstRunkView setValue:minutsFirstRunk animated:animated];
+    [self.minutsSecondRunkView setValue:minutsSecondRunk animated:animated];
 }
 
 -(void)tik{
@@ -83,13 +87,13 @@
     if (self.currentTimerInterval <= 0) return;
     
     self.currentTimerInterval--;
-    [self setTimerInterval:self.currentTimerInterval];
+    [self setTimerInterval:self.currentTimerInterval animated:YES];
 }
 
 -(void)tak{
         
     self.currentTimerInterval++;
-    [self setTimerInterval:self.currentTimerInterval];
+    [self setTimerInterval:self.currentTimerInterval animated:YES];
 }
 
 

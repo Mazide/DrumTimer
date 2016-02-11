@@ -67,7 +67,7 @@
 
 #pragma mark - public
 
-- (void)setValue:(NSInteger)value{
+- (void)setValue:(NSInteger)value animated:(BOOL)animated{
     NSInteger currentRow = [self.numbers indexOfObject:@(value)];
 
     if (self.previosValue == 0 && value == 9) {
@@ -80,7 +80,7 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentRow inSection:0];
     [self.numberTableView scrollToRowAtIndexPath:indexPath
                                 atScrollPosition:UITableViewScrollPositionTop
-                                        animated:YES];
+                                        animated:animated];
     self.previosValue = value;
 }
 
