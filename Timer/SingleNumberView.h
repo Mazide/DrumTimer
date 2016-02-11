@@ -10,6 +10,6 @@
 
 @interface SingleNumberView : UIView
 
-- (void)setValue:(NSInteger)value animated:(BOOL)animated;
+- (void)setValue:(NSInteger)value ;
 
 @end

@@ -65,7 +65,7 @@
 
 #pragma mark - public
 
-- (void)setValue:(NSInteger)value animated:(BOOL)animated{
+- (void)setValue:(NSInteger)value{
     NSInteger currentRow = [self.numbers indexOfObject:@(value)];
     NSInteger lastRow = [self.numbers indexOfObject:self.numbers.lastObject];
     
@@ -77,10 +77,15 @@
         self.needUpdate = NO;
     }
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentRow inSection:0];
+    [self showNumberWithIndex:currentRow animated:YES];
+}
+
+- (void)showNumberWithIndex:(NSInteger)index animated:(BOOL)animated{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [self.numberTableView scrollToRowAtIndexPath:indexPath
                                 atScrollPosition:UITableViewScrollPositionTop
                                         animated:YES];
+
 }
 
 #pragma mark - UITableViewDataSource
@@ -91,7 +96,8 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NumberTableViewCell* numberCell = (NumberTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"NumberTableViewCell"];
-    NSInteger number = [self.numbers[self.needUpdate ? 0 : indexPath.row] integerValue];
+    NSInteger numberIndex = self.needUpdate ? 0 : indexPath.row;
+    NSInteger number = [self.numbers[numberIndex] integerValue];
     numberCell.numberLabel.text = [NSString stringWithFormat:@"%ld", number];
     return numberCell;
 }
@@ -100,10 +106,7 @@
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
     if (self.needUpdate) {
         [self.numberTableView reloadData];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        [self.numberTableView scrollToRowAtIndexPath:indexPath
-                                    atScrollPosition:UITableViewScrollPositionTop
-                                            animated:NO];
+        [self showNumberWithIndex:0 animated:NO];
     }
 }
 

@@ -75,11 +75,11 @@
     NSInteger minutsFirstRunk = minuts % countInRunk;
     NSInteger minutsSecondRunk = minuts / countInRunk;
     
-    [self.secondsFirstRunkView setValue:secondsFirstRunk animated:animated];
-    [self.secondsSecondRunkView setValue:secondsSecondRunk animated:animated];
+    [self.secondsFirstRunkView setValue:secondsFirstRunk];
+    [self.secondsSecondRunkView setValue:secondsSecondRunk];
     
-    [self.minutsFirstRunkView setValue:minutsFirstRunk animated:animated];
-    [self.minutsSecondRunkView setValue:minutsSecondRunk animated:animated];
+    [self.minutsFirstRunkView setValue:minutsFirstRunk];
+    [self.minutsSecondRunkView setValue:minutsSecondRunk];
 }
 
 -(void)tik{
