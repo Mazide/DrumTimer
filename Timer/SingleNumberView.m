@@ -9,12 +9,14 @@
 #import "SingleNumberView.h"
 #import "NumberTableViewCell.h"
 
-static NSInteger countOfRows = 10;
-
 @interface SingleNumberView() <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UIView* mainView;
 @property (weak, nonatomic) IBOutlet UITableView* numberTableView;
+
+@property (strong, nonatomic) NSArray* numbers;
+@property (nonatomic) NSInteger previosValue;
+@property (nonatomic) BOOL needUpdate;
 
 @end
 
@@ -38,6 +40,10 @@ static NSInteger countOfRows = 10;
 
 - (void)setup{
     
+    self.numbers = @[@(9),@(8),@(7),@(6),@(5),@(4),@(3),@(2),@(1),@(0),@(9)];
+    self.previosValue = 0;
+    self.needUpdate = NO;
+
     [self setupMainView];
     [self setupTableView];
 }
@@ -51,6 +57,7 @@ static NSInteger countOfRows = 10;
 - (void)setupTableView{
     
     self.numberTableView.dataSource = self;
+    self.numberTableView.delegate = self;
     
     NSString* cellNibName = NSStringFromClass([NumberTableViewCell class]);
     UINib* cellNib = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
@@ -61,26 +68,41 @@ static NSInteger countOfRows = 10;
 #pragma mark - public
 
 - (void)setValue:(NSInteger)value{
-    
-    NSInteger currentRow = countOfRows - 1 - value;
+    NSInteger currentRow = [self.numbers indexOfObject:@(value)];
+
+    if (self.previosValue == 0 && value == 9) {
+        currentRow = 10;
+        self.needUpdate = YES;
+    } else {
+        self.needUpdate = NO;
+    }
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentRow inSection:0];
     [self.numberTableView scrollToRowAtIndexPath:indexPath
                                 atScrollPosition:UITableViewScrollPositionTop
                                         animated:YES];
-
+    self.previosValue = value;
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return countOfRows;
+    return self.numbers.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NumberTableViewCell* numberCell = (NumberTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"NumberTableViewCell"];
-    numberCell.numberLabel.text = [NSString stringWithFormat:@"%ld", countOfRows - 1 - indexPath.row];
+    numberCell.numberLabel.text = [NSString stringWithFormat:@"%ld", [self.numbers[indexPath.row] integerValue]];
     return numberCell;
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+    if (self.needUpdate) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.numberTableView scrollToRowAtIndexPath:indexPath
+                                    atScrollPosition:UITableViewScrollPositionTop
+                                            animated:NO];
+    }
 }
 
 @end
