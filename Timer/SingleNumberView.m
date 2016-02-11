@@ -9,15 +9,12 @@
 #import "SingleNumberView.h"
 #import "NumberTableViewCell.h"
 
-static const NSInteger maxValue = 9;
+static NSInteger countOfRows = 10;
 
 @interface SingleNumberView() <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UIView* mainView;
 @property (weak, nonatomic) IBOutlet UITableView* numberTableView;
-
-@property (nonatomic) NSInteger currentRow;
-@property (nonatomic) NSInteger countOfRows;
 
 @end
 
@@ -40,9 +37,6 @@ static const NSInteger maxValue = 9;
 }
 
 - (void)setup{
-
-    self.currentRow = 0;
-    self.countOfRows = 11;
     
     [self setupMainView];
     [self setupTableView];
@@ -67,24 +61,25 @@ static const NSInteger maxValue = 9;
 #pragma mark - public
 
 - (void)setValue:(NSInteger)value{
-
-    self.currentRow = maxValue - value % self.countOfRows;
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.currentRow inSection:0];
+    NSInteger currentRow = countOfRows - 1 - value;
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentRow inSection:0];
     [self.numberTableView scrollToRowAtIndexPath:indexPath
                                 atScrollPosition:UITableViewScrollPositionTop
                                         animated:YES];
+
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.countOfRows;
+    return countOfRows;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NumberTableViewCell* numberCell = (NumberTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"NumberTableViewCell"];
-    numberCell.numberLabel.text = [NSString stringWithFormat:@"%ld", maxValue - indexPath.row % self.countOfRows];
+    numberCell.numberLabel.text = [NSString stringWithFormat:@"%ld", countOfRows - 1 - indexPath.row];
     return numberCell;
 }
 
