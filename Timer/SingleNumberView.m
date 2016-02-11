@@ -77,15 +77,10 @@
         self.needUpdate = NO;
     }
     
-    [self showNumberWithIndex:currentRow animated:YES];
-}
-
-- (void)showNumberWithIndex:(NSInteger)index animated:(BOOL)animated{
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentRow inSection:0];
     [self.numberTableView scrollToRowAtIndexPath:indexPath
                                 atScrollPosition:UITableViewScrollPositionTop
                                         animated:YES];
-
 }
 
 #pragma mark - UITableViewDataSource
@@ -106,7 +101,10 @@
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
     if (self.needUpdate) {
         [self.numberTableView reloadData];
-        [self showNumberWithIndex:0 animated:NO];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.numberTableView scrollToRowAtIndexPath:indexPath
+                                    atScrollPosition:UITableViewScrollPositionTop
+                                            animated:NO];
     }
 }
 
