@@ -39,11 +39,18 @@
 
 - (void)setup{
     
-    self.numbers = [NSMutableArray arrayWithArray:@[@(9),@(8),@(7),@(6),@(5),@(4),@(3),@(2),@(1),@(0)]];
+    [self initNumbers];
     self.needUpdate = NO;
     
     [self setupMainView];
     [self setupTableView];
+}
+
+- (void)initNumbers{
+
+    self.numbers = [NSMutableArray new];
+    for (int i=9; i >= 0; i--)
+        [self.numbers addObject:@(i)];
 }
 
 - (void)setupMainView{
