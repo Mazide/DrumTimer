@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self.timerView setTimerInterval:3000];
+    [self.timerView setTimerInterval:61];
 
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(tik) userInfo:nil repeats:YES];
     
